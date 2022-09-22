@@ -1,0 +1,21 @@
+  <h1 style="text-align: center">Lista Kierowców</h1>
+<table class="table table-striped">
+  <thead class="thead">
+  <tr>
+    <th scope="col">Nr</th>
+    <th scope="col">Imię</th>
+    <th scope="col">Nazwisko</th>
+    <th scope="col">Pesel</th>
+    <th scope="col">Akcja</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let driver of drivers; let i = index">
+    <th scope="row">{{i+1}}</th>
+    <td>{{driver.firstName}}</td>
+    <td>{{driver.name}}</td>
+    <td>{{driver.pesel}}</td>
+    <td><button type="button" class="btn btn-danger" (click)="onSelect(driver)">Usuń Kierowcę</button></td>
+  </tr>
+  </tbody>
+</table>

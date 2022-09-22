@@ -1,0 +1,50 @@
+<form class="add-vehicle-form" xmlns="http://www.w3.org/1999/html">
+  <div class="card-header">
+    <div class="mat-card-title">Dodaj Samochód</div>
+  </div>
+  <div class="card-body">
+    <div class="form-group">
+      <label>Markę</label>
+      <input class="form-control" name="brand" [(ngModel)]="inputBrand" #brand="ngModel" placeholder="Wprowadź markę..."
+      required>
+      <div *ngIf="brand.invalid && (brand.dirty || brand.touched)"
+           class="alert alert-danger">
+        <div *ngIf="brand.errors.required">Nazwa marki jest wymagana.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Model</label>
+      <input type="email" class="form-control" name="model" [(ngModel)]="inputModel" #model="ngModel" placeholder="Wprowadź model..."
+      required>
+      <div *ngIf="model.invalid && (model.dirty || model.touched)"
+           class="alert alert-danger">
+        <div *ngIf="model.errors.required">Nazwa modelu jest wymagana.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Numer Rejestracyjny</label>
+      <input type="email" class="form-control" name="registerNo" [(ngModel)]="inputRegisterNo" #registerNo="ngModel" placeholder="Wprowadź numer rejestracyjny..."
+      required minlength="7" maxlength="8">
+      <small class="form-text text-muted">Sprawdź numer rejestracyny w dowodzie rejestracyjnym.</small>
+      <div *ngIf="registerNo.invalid && (registerNo.dirty || registerNo.touched)"
+           class="alert alert-danger">
+        <div *ngIf="registerNo.errors.required">Numer rejestracyjny jest wymagany.</div>
+        <div *ngIf="registerNo.errors.minlength">Numer rejestracyjny musi mieć minimum 7 znaków.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Numer Vin</label>
+      <input type="email" class="form-control" name="vinNo" [(ngModel)]="inputVinNo" #vinNo="ngModel" placeholder="Wprowadź numer VIN..."
+      required minlength="17" maxlength="17">
+      <small class="form-text text-muted">Sprawdź numer VIN w dowodzie rejestracyjnym.</small>
+      <div *ngIf="vinNo.invalid && (vinNo.dirty || vinNo.touched)"
+           class="alert alert-danger">
+        <div *ngIf="vinNo.errors.required">Numer VIN jest wymagany.</div>
+        <div *ngIf="vinNo.errors.minlength">Numer VIN musi mieć dokładnie 17 znaków</div>
+      </div>
+    </div>
+    <button type="clear" class="btn btn-warning" (click)="clearForm()">Wyczyść</button>
+    <button type="submit" class="btn btn-primary" *ngIf="brand.valid && model.valid && registerNo.valid && vinNo.valid" style="float: right"
+            (click)="addVehicle()">Dodaj</button>
+  </div>
+</form>

@@ -1,0 +1,143 @@
+<h1 style="text-align: center">Lista Pojazdów</h1>
+<table class="table table-striped">
+  <thead class="thead">
+  <tr>
+    <th scope="col">Nr</th>
+    <th scope="col">Marka</th>
+    <th scope="col">Model</th>
+    <th scope="col">Numer Rejestracyjny</th>
+    <th scope="col">Numer VIN</th>
+    <th scope="col">W Naprawie</th>
+    <th scope="col">Czy wynajęty</th>
+    <th scope="col">Akcja</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let vehicle of vehicles; let i = index">
+    <th scope="row">{{i+1}}</th>
+    <td>{{vehicle.brand}}</td>
+    <td>{{vehicle.model}}</td>
+    <td>{{vehicle.registerNo}}</td>
+    <td>{{vehicle.vin}}</td>
+    <td>{{onRepair(vehicle)}}</td>
+    <td>{{isRented(vehicle)}}</td>
+    <td>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+          Akcje
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" (click)="editData(vehicle ,edit)">Edytuj Dane</a>
+          <a class="dropdown-item" (click)="addRent(vehicle,makeRent)" *ngIf="isRented(vehicle) == 'NIE'">Wynajmij</a>
+          <a class="dropdown-item" (click)="endRent(vehicle)" *ngIf="isRented(vehicle) != 'NIE'">Zakończ Wynajem</a>
+          <a class="dropdown-item" (click)="setRepair(true,vehicle)" *ngIf="vehicle.repair == false">Wyślij do
+            naprawy</a>
+          <a class="dropdown-item" (click)="setRepair(false,vehicle)" *ngIf="vehicle.repair == true">Odebierz z
+            naprawy</a>
+          <a class="dropdown-item" (click)="delete(vehicle)">Usuń</a>
+        </div>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+<ng-template #edit let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Edycja Pojazdu</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Markę</label>
+      <input class="form-control" name="brand" [(ngModel)]="inputBrand" #brand="ngModel" placeholder="Wprowadź markę..."
+             required>
+      <div *ngIf="brand.invalid && (brand.dirty || brand.touched)"
+           class="alert alert-danger">
+        <div *ngIf="brand.errors.required">Nazwa marki jest wymagana.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Model</label>
+      <input type="email" class="form-control" name="model" [(ngModel)]="inputModel" #model="ngModel" placeholder="Wprowadź model..."
+             required>
+      <div *ngIf="model.invalid && (model.dirty || model.touched)"
+           class="alert alert-danger">
+        <div *ngIf="model.errors.required">Nazwa modelu jest wymagana.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Numer Rejestracyjny</label>
+      <input type="email" class="form-control" name="registerNo" [(ngModel)]="inputRegisterNo" #registerNo="ngModel" placeholder="Wprowadź numer rejestracyjny..."
+             required minlength="7" maxlength="8">
+      <small class="form-text text-muted">Sprawdź numer rejestracyny w dowodzie rejestracyjnym.</small>
+      <div *ngIf="registerNo.invalid && (registerNo.dirty || registerNo.touched)"
+           class="alert alert-danger">
+        <div *ngIf="registerNo.errors.required">Numer rejestracyjny jest wymagany.</div>
+        <div *ngIf="registerNo.errors.minlength">Numer rejestracyjny musi mieć minimum 7 znaków.</div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" style="float: left" (click)="modal.close('Close click')">Zamknij bez
+      Zmian
+    </button>
+    <button type="submit" class="btn btn-primary" *ngIf="brand.valid && model.valid && registerNo.valid" style="float: right" (click)="editVehicle(modal)">Wprowadź Zmiany
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #makeRent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Wynajem Pojazdu</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Data rozpoczęcia wynajmu</label><br>
+      <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd"
+               name="dp" [(ngModel)]="myDate" ngbDatepicker #d="ngbDatepicker" [markDisabled]="isDisabled" required>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+        </div>
+        <div *ngIf="d.invalid && (d.dirty || d.touched)"
+             class="alert alert-danger">
+          <div *ngIf="d.errors.required">Data rozpoczęcia jest wymagana.</div>
+        </div>
+      </div>
+      <div class="input-group-prepend">
+        <label>Kierowca Wynajmujący</label>
+      </div>
+      <select class="custom-select" [(ngModel)]="choosenDriver" #choosenOne="ngModel" required>
+        <option *ngFor="let driver of drivers" value="{{driver.pesel}}">{{driver.name + ' ' + driver.firstName}}</option>
+      </select>
+      <div *ngIf="choosenOne.invalid && (choosenOne.dirty || choosenOne.touched)"
+                    class="alert alert-danger">
+      <div *ngIf="choosenOne.errors.required">Wybór kierowcy jest wymagany.</div>
+    </div>
+    </div>
+    <label>Dzienny Koszt</label>
+    <input type="email" class="form-control" [(ngModel)]="inputCost" #cost="ngModel"
+           placeholder="Podaj koszt..." required maxlength="3" pattern="^[0-9]{1,3}">
+    <div *ngIf="cost.invalid && (cost.dirty || cost.touched)"
+         class="alert alert-danger">
+      <div *ngIf="cost.errors.required">Koszt wynajmu jest obowiązkowy.</div>
+      <div *ngIf="cost.errors.pattern">Koszt wynajmu musi być liczbą.</div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" style="float: left" (click)="modal.close('Close click')">Zamknij bez
+      Zmian
+    </button>
+    <button type="submit" class="btn btn-primary" *ngIf="choosenOne.valid && cost.valid" style="float: right" (click)="createRent(modal)">Wynajmij
+    </button>
+  </div>
+</ng-template>
+

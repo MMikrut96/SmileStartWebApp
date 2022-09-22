@@ -1,0 +1,8 @@
+.text-style{
+  max-width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3%;
+  border: 1px solid #54f80e;
+  box-shadow: 3px 3px #93ff66;
+}

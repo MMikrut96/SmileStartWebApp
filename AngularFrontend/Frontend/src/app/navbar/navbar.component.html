@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-md navbar-light" style="background-color: #54f80e;">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">{{navtitle}}</a>
+    <div class="navbar-nav" routerLinkActive="active">
+      <a class="nav-item nav-link" routerLink="about-coop">O Współpracy</a>
+      <a class="nav-item nav-link" routerLink="contact">Kontakt</a>
+      <a class="nav-item nav-link" routerLink="sign-in" *ngIf="isLoggedIn() == true">Zaloguj</a>
+      <div class="navbar-nav" *ngIf="isLoggedIn() == false">
+        <div class="navbar-nav" id="adminnavbar" *ngIf="isAdmin() == true">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Kierowca
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="driver-list">Lista Kierowców</a>
+              <a class="dropdown-item" href="add-driver">Dodaj Kierowcę</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Pojazd
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="vehicle-list">Lista Pojazdów</a>
+              <a class="dropdown-item" href="add-vehicle">Dodaj Pojazd</a>
+            </div>
+          </li>
+          <a class="nav-item nav-link" routerLink="/" (click)="logout()">Wyloguj</a>
+        </div>
+        <div class="navbar-nav" id="usernavbar" *ngIf="isAdmin() == false ">
+          <a class="nav-item nav-link" routerLink="profit-list">Wyświetl moje zarobki</a>
+          <a class="nav-item nav-link" routerLink="rented-vehicles">Lista Wynajętych Pojazdów</a>
+          <a class="nav-item nav-link" routerLink="/" (click)="logout()">Wyloguj</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+

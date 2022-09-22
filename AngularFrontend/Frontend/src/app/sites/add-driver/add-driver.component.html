@@ -1,0 +1,39 @@
+<form class="add-driver-form" xmlns="http://www.w3.org/1999/html">
+  <div class="card-header">
+    <div class="mat-card-title">Dodaj Kierowcę</div>
+  </div>
+  <div class="card-body">
+    <div class="form-group">
+      <label>Imię</label>
+      <input class="form-control" name="firstName" [(ngModel)]="inputFirstName" #firstName="ngModel" placeholder="Wprowadź imię kierowcy..."
+      required>
+      <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+           class="alert alert-danger">
+        <div *ngIf="firstName.errors.required">Imię jest wymagane.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Nazwisko</label>
+      <input type="email" class="form-control" name="driverName" [(ngModel)]="inputName" #driverName="ngModel" placeholder="Wprowadź nazwisko kierowcy..."
+      required>
+      <div *ngIf="driverName.invalid && (driverName.dirty || driverName.touched)"
+           class="alert alert-danger">
+        <div *ngIf="driverName.errors.required">Nazwisko jest wymagane.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Pesel</label>
+      <input type="email" class="form-control" name="pesel" [(ngModel)]="inputPesel" #pesel="ngModel" placeholder="Wprowadź numer PESEL kierowcy..."
+      required minlength="11" maxlength="11" pattern="^[0-9]{11}">
+      <div *ngIf="pesel.invalid && (pesel.dirty || pesel.touched)"
+           class="alert alert-danger">
+        <div *ngIf="pesel.errors.required">PESEL jest wymagany.</div>
+        <div *ngIf="pesel.errors.minlength">PESEL jest za krótki. Musi mieć 11 cyfr.</div>
+        <div *ngIf="pesel.errors.pattern">PESEL składa się z samych cyfr.</div>
+      </div>
+      <small class="form-text text-muted">Sprawdź numer pesel z dowodem.</small>
+    </div>
+    <button type="clear" class="btn btn-warning" (click)="clearForm()">Wyczyść</button>
+    <button type="submit" class="btn btn-primary" *ngIf="firstName.valid && driverName.valid && pesel.valid" style="float: right" (click)="addDriver()">Dodaj</button>
+  </div>
+</form>

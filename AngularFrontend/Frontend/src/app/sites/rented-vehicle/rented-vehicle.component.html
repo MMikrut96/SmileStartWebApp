@@ -1,0 +1,25 @@
+<h1 style="text-align: center">Lista Wynajmowanych Pojazdów</h1>
+<table class="table table-striped">
+  <thead class="thead">
+  <tr>
+    <th scope="col">Nr</th>
+    <th scope="col">Marka</th>
+    <th scope="col">Model</th>
+    <th scope="col">Numer Rejestracyjny</th>
+    <th scope="col">Numer VIN</th>
+    <th scope="col">Akcja</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let vehicle of vehicles; let i = index">
+    <th scope="row">{{i+1}}</th>
+    <td>{{vehicle.brand}}</td>
+    <td>{{vehicle.model}}</td>
+    <td>{{vehicle.registerNo}}</td>
+    <td>{{vehicle.vin}}</td>
+    <td>
+      <button type="button" class="btn btn-danger" (click)="endRent(vehicle)">Zakończ Wynajem</button>
+    </td>
+  </tr>
+  </tbody>
+</table>

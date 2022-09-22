@@ -1,0 +1,88 @@
+<h1 style="text-align: center">Lista Przychodów</h1>
+<table class="table table-striped">
+  <thead class="thead">
+  <tr>
+    <th scope="col">Nr</th>
+    <th scope="col">Data</th>
+    <th scope="col">Przychód</th>
+    <th scope="col">Akcja</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let profit of profits; let i = index">
+    <th scope="row">{{i+1}}</th>
+    <td>{{profit.date}}</td>
+    <td>{{profit.income}}</td>
+    <td>
+      <button *ngIf="compareDate(profit.date)" type="button" class="btn btn-danger" (click)="editData(profit, edit)">Edytuj Dane</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<div style="text-align: center">
+  <button type="button" style="margin-top: 3%" class="btn btn-primary" (click)="addData(add)">Dodaj Przychód</button>
+</div>
+
+<ng-template #edit let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Edycja Wpisu</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Nowa wartość Przychodu</label>
+      <input class="form-control" name="income" [(ngModel)]="inputIncome" #income="ngModel" placeholder="Wprowadź nowy przychód..."
+      required maxlength="3" pattern="^[0-9]{1,3}">
+      <div *ngIf="income.invalid && (income.dirty || income.touched)"
+           class="alert alert-danger">
+        <div *ngIf="income.errors.required">Wysokość przychodu jest obowiązkowa.</div>
+        <div *ngIf="income.errors.pattern">Wysokość przychodu musi być liczbą.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Za wynajem pojazdów zostanie odjęte:</label><br>
+      <label style="color: red">{{countCosts()}}</label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" style="float: left" (click)="modal.close('Close click')">Zamknij bez
+      Zmian
+    </button>
+    <button type="submit" class="btn btn-primary" *ngIf="income.valid" style="float: right" (click)="editProfit(modal)">Wprowadź Zmiany
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #add let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Dodaj przychód</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Wysokość przychodu</label>
+      <input class="form-control" name="income" [(ngModel)]="inputIncome" #income="ngModel" placeholder="Wprowadź wysokość przychodu..."
+      required maxlength="3" pattern="^[0-9]{1,3}">
+      <div *ngIf="income.invalid && (income.dirty || income.touched)"
+           class="alert alert-danger">
+        <div *ngIf="income.errors.required">Wysokość przychodu jest obowiązkowa.</div>
+        <div *ngIf="income.errors.pattern">Wysokość przychodu musi być liczbą.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Za wynajem pojazdów zostanie odjęte:</label><br>
+      <label style="color: red">{{countCosts()}}</label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" style="float: left" (click)="modal.close('Close click')">Zamknij bez
+      Zmian
+    </button>
+    <button type="submit" class="btn btn-primary" *ngIf="income.valid" style="float: right" (click)="addProfit(modal)">Wprowadź
+    </button>
+  </div>
+</ng-template>
